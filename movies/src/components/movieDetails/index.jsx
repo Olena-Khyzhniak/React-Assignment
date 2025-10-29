@@ -13,6 +13,10 @@ import MovieReviews from "../movieReviews"
 import { useQuery } from "@tanstack/react-query"; 
 import { getMovieCredits } from "../../api/tmdb-api";
 import { getMovieRecommendations } from "../../api/tmdb-api";
+import CastList from "../castList";
+import Recommendations from "../recommendations";
+
+
 
 
 
@@ -31,16 +35,18 @@ const chip = { margin: 0.5 };
 const MovieDetails = ({ movie }) => {  // Don't miss this!
 const [drawerOpen, setDrawerOpen] = useState(false);
 
+const { id } = movie;
+
 
 
 const { data: credits, isLoading: creditsLoading, isError: creditsError, error: creditsErrorMessage } = useQuery({
-    queryKey: ["movieCredits", { id: movie.id }],
+    queryKey: ['credits', { id}],
     queryFn: getMovieCredits,
   });
 
 
   const { data: recommendations, isLoading: recommendationsLoading, isError: recommendationsError, error: recommendationsErrorMessage } = useQuery({
-    queryKey: ["movieRecommendations", { id: movie.id }],
+    queryKey: ['recommendations', { id }],
     queryFn: getMovieRecommendations,
   }); 
 
@@ -140,6 +146,13 @@ const { data: credits, isLoading: creditsLoading, isError: creditsError, error: 
       <Drawer anchor="top" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
         <MovieReviews movie={movie} />
       </Drawer>
+
+      <h3>Cast</h3>
+<CastList cast={credits?.cast} />
+
+
+      <h3>Recommendations</h3>
+<Recommendations movies={recommendations?.results} /> 
 
       </>
   );
