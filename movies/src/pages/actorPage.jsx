@@ -1,40 +1,27 @@
 import React from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getActorDetails, getActorsMovies } from "../api/tmdb-api";
+import ActorDetails from "../components/actorDetails";
 import Spinner from "../components/spinner";
-import MovieList from "../components/movieList";
 
 const ActorPage = () => {
   const { id } = useParams();
 
-  const { data: actor, isLoading: isActorLoading } = useQuery({
-    queryKey: ['actor', { id }],
-    queryFn: getActorDetails
+  const { data: actor, isLoading: actorLoading } = useQuery({
+    queryKey: ["actor-details", { id }],
+    queryFn: getActorDetails,
   });
 
+  const { data: movies, isLoading: moviesLoading } = useQuery({
+    queryKey: ["actor-movies", { id }],
+    queryFn: getActorsMovies,
+  });
 
-  const { data: movies, isLoading: isMoviesLoading } = useQuery({
-  queryKey: ['actorMovies', { id }],
-  queryFn: getActorsMovies
-});
+  if (actorLoading || moviesLoading) return <Spinner />;
+  if (!actor) return <p>Actor not found</p>;
 
-
-  
-
-   if (isActorLoading || isMoviesLoading) return <Spinner />;
-
-  return (
-    <div style={{ padding: "2rem" }}>
-      <h1>{actor.name}</h1>
-      <p>Born: {actor.birthday}</p>
-      <p>Place of Birth: {actor.place_of_birth}</p>
-      <p>{actor.biography}</p>
-
-      <h3>Movies</h3>
-    <MovieList movies={movies?.cast || []} />
-    </div>
-  );
+  return <ActorDetails actor={actor} movies={movies?.cast} />;
 };
 
 export default ActorPage;
