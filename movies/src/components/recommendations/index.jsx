@@ -1,32 +1,79 @@
-import React from "react";
-import { Card, CardMedia, CardContent, Typography } from "@mui/material";
+import React, { useContext } from "react";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Link } from "react-router-dom";
+import { MoviesContext } from "../../contexts/moviesContext";
+import img from "../../images/film-poster-placeholder.png";
 
-const Recommendations = ({ movies }) => {
-  if (!movies || movies.length === 0) return <p>No recommendations.</p>;
+export default function Recommendations({ movies }) {
+  const { favorites, addToFavorites } = useContext(MoviesContext);
 
   return (
-    <div style={{ display: "flex", gap: "1rem", overflowX: "auto" }}>
-      {movies.map((m) => (
-        <Card key={m.id} sx={{ minWidth: 150 }}>
-          <Link to={`/movies/${m.id}`}>
+    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3, justifyContent: "center" }}>
+      {movies.map((movie) => {
+        const isFavorite = favorites.includes(movie.id);
+
+        return (
+          <Card
+            key={movie.id}
+            sx={{
+              width: 220,
+              height: 420,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              boxShadow: 3,
+              borderRadius: 2,
+              transition: "transform 0.2s",
+              "&:hover": {
+                transform: "scale(1.03)",
+              },
+            }}
+          >
+            <CardContent sx={{ px: 2, py: 1 }}>
+              <Typography
+                variant="h6"
+                align="center"
+                sx={{ fontWeight: "bold", fontSize: "1rem" }}
+              >
+                {movie.title}
+              </Typography>
+            </CardContent>
+
             <CardMedia
               component="img"
+              sx={{ height: 300, objectFit: "cover" }}
               image={
-                m.poster_path
-                  ? `https://image.tmdb.org/t/p/w200${m.poster_path}`
-                  : "https://via.placeholder.com/200x300?text=No+Image"
+                movie.poster_path
+                  ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                  : img
               }
-              alt={m.title}
+              alt={movie.title}
             />
-          </Link>
-          <CardContent>
-            <Typography variant="subtitle1">{m.title}</Typography>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
-};
 
-export default Recommendations;
+            <Box sx={{ display: "flex", justifyContent: "center", gap: 1, pb: 1 }}>
+              <IconButton
+                onClick={() => addToFavorites(movie.id)}
+                color={isFavorite ? "error" : "primary"}
+              >
+                <FavoriteIcon />
+              </IconButton>
+
+              <Link to={`/movies/${movie.id}`}>
+                <Button variant="outlined" size="small" color="primary">
+                  More Info
+                </Button>
+              </Link>
+            </Box>
+          </Card>
+        );
+      })}
+    </Box>
+  );
+}

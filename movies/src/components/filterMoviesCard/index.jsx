@@ -55,7 +55,7 @@ export default function FilterMoviesCard(props) {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        boxShadow: 3,
+        boxShadow: 7,
         borderRadius: 2,
         transition: "transform 0.2s",
         "&:hover": {
