@@ -8,29 +8,41 @@ import { Link } from "react-router-dom";
 const ActorDetails = ({ actor, movies }) => {
   return (
     <Box sx={{ padding: "2rem" }}>
-      <Typography variant="h3">{actor.name}</Typography>
-      <Typography variant="h6">Born: {actor.birthday}</Typography>
-      <Typography variant="h6">Place of Birth: {actor.place_of_birth}</Typography>
+   <Box sx={{ display: "flex", gap: 4 }}>
+  <Box sx={{ flex: 1 }}>
+    <Typography variant="h3">{actor.name}</Typography>
+    <Typography variant="h6">Born: {actor.birthday}</Typography>
+    <Typography variant="h6">Place of Birth: {actor.place_of_birth}</Typography>
+    <Typography variant="body1" sx={{ marginTop: 2 }}>
+      {actor.biography || "No biography available."}
+    </Typography>
+  </Box>
 
-      {actor.profile_path && (
-        <img
-          src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
-          alt={actor.name}
-          style={{ width: "300px", borderRadius: "10px", marginTop: "1rem" }}
-        />
-      )}
+  {actor.profile_path && (
+    <Box sx={{ flexShrink: 0 }}>
+      <img
+        src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
+        alt={actor.name}
+        style={{ width: "200px", borderRadius: "10px" }}
+      />
+    </Box>
+  )}
+</Box>
 
-      <Paper sx={{ padding: "1rem", marginY: 2 }}>
-        <Typography variant="body1">
-          {actor.biography || "No biography available."}
-        </Typography>
-      </Paper>
 
       <Typography variant="h4" sx={{ marginTop: 3, marginBottom: 1 }}>
         Movies
       </Typography>
 
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+      <Box
+  sx={{
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 3,
+    justifyContent: "center",
+    marginTop: 2,
+  }}
+>
         {movies.length > 0 ? (
           movies.map((movie) => (
             <Box key={movie.id} sx={{ width: 250 }}>
@@ -42,7 +54,7 @@ const ActorDetails = ({ actor, movies }) => {
                   release_date: movie.release_date,
                   vote_average: movie.vote_average || 0,
                 }}
-                action={() => null} // отключаем ошибку, если action не нужен
+                action={() => null} 
               />
             </Box>
           ))

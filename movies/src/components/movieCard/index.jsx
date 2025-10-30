@@ -16,6 +16,8 @@ import { Link } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import React, { useContext  } from "react";
 import { MoviesContext } from "../../contexts/moviesContext";
+import Box from "@mui/material/Box";
+
 
 
 
@@ -39,7 +41,21 @@ export default function MovieCard({ movie, action }) {
 
 
   return (
-    <Card>
+   <Card
+  sx={{
+    width: 220,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    boxShadow: 3,
+    borderRadius: 2,
+    transition: "transform 0.2s",
+    "&:hover": {
+      transform: "scale(1.03)",
+    },
+  }}
+>
+
             <CardHeader
         avatar={
           movie.favorite ? (
@@ -48,48 +64,50 @@ export default function MovieCard({ movie, action }) {
             </Avatar>
           ) : null
         }
-        title={
-          <Typography variant="h5" component="p">
-            {movie.title}{" "}
-          </Typography>
-        }
+       title={
+      <Typography
+      variant="h6"
+      component="p"
+      align="center"
+      sx={{ fontWeight: "bold", fontSize: "1rem", paddingX: 1 }}
+    >
+      {movie.title}
+    </Typography>
+  }
       />
 
-      <CardMedia
-        sx={{ height: 500 }}
-        image={
-          movie.poster_path
-            ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-            : img
-        }
-      />
-      <CardContent>
-        <Grid container>
-          <Grid size={{xs: 6}}>
-            <Typography variant="h6" component="p">
-              <CalendarIcon fontSize="small" />
-              {movie.release_date}
-            </Typography>
-          </Grid>
-          <Grid size={{xs: 6}}>
-            <Typography variant="h6" component="p">
-              <StarRateIcon fontSize="small" />
-              {"  "} {movie.vote_average}{" "}
-            </Typography>
-          </Grid>
-        </Grid>
-      </CardContent>
-          <CardActions disableSpacing>
-      
-        {action(movie)}
-      
-        <Link to={`/movies/${movie.id}`}>
-          <Button variant="outlined" size="medium" color="primary">
-            More Info ...
-          </Button>
-        </Link>
-        
-      </CardActions>
+    <CardMedia
+  component="img"
+  sx={{ height: 300, objectFit: "cover" }}
+  image={
+    movie.poster_path
+      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+      : img
+  }
+/>
+
+
+      <CardContent sx={{ px: 2, py: 1 }}>
+  <Box sx={{ backgroundColor: "#decfde99", borderRadius: 1, padding: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 0.5 }}>
+    <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+      <CalendarIcon fontSize="small" />
+      {movie.release_date || "—"}
+    </Typography>
+    <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+      <StarRateIcon fontSize="small" />
+      {movie.vote_average || "—"}
+    </Typography>
+  </Box>
+</CardContent>
+
+
+        <CardActions sx={{ justifyContent: "center", pb: 1 }}>
+  <Link to={`/movies/${movie.id}`}>
+    <Button variant="outlined" size="small" color="primary">
+      More Info
+    </Button>
+  </Link>
+</CardActions>
 
     </Card>
   );
