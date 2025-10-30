@@ -13,7 +13,7 @@ const ActorPage = () => {
     queryFn: getActorDetails,
   });
 
-  const { data: movies, isLoading: moviesLoading } = useQuery({
+  const { data: moviesData, isLoading: moviesLoading } = useQuery({
     queryKey: ["actor-movies", { id }],
     queryFn: getActorsMovies,
   });
@@ -21,7 +21,7 @@ const ActorPage = () => {
   if (actorLoading || moviesLoading) return <Spinner />;
   if (!actor) return <p>Actor not found</p>;
 
-  return <ActorDetails actor={actor} movies={movies?.cast} />;
+  return <ActorDetails actor={actor} movies={moviesData?.cast || []} />;
 };
 
 export default ActorPage;

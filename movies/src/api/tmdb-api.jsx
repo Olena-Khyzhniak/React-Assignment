@@ -219,9 +219,19 @@ export const getMovieRecommendations = ({ queryKey }) => {
 };
 
 
-export const getActorsMovies = async ({ queryKey }) => {
-  const [{ id }] = queryKey;
-  const resp = await fetch(`${BASE_URL}/person/${id}/movie_credits?api_key=${API_KEY}&language=en-US`);
-  if (!resp.ok) throw new Error("Failed to fetch actor's movies");
-  return resp.json();
+export const getActorsMovies = ({ queryKey }) => {
+  const [, { id }] = queryKey;
+  return fetch(
+    `https://api.themoviedb.org/3/person/${id}/movie_credits?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US`
+  ).then((response) => {
+    if (!response.ok) {
+      return response.json().then((error) => {
+        throw new Error(error.status_message || "Something went wrong");
+      });
+    }
+    return response.json();
+  }).catch((error) => {
+    throw error;
+  });
 };
+
