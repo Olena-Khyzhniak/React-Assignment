@@ -219,3 +219,9 @@ export const getMovieRecommendations = ({ queryKey }) => {
 };
 
 
+export const getActorsMovies = async ({ queryKey }) => {
+  const [{ id }] = queryKey;
+  const resp = await fetch(`${BASE_URL}/person/${id}/movie_credits?api_key=${API_KEY}&language=en-US`);
+  if (!resp.ok) throw new Error("Failed to fetch actor's movies");
+  return resp.json();
+};
