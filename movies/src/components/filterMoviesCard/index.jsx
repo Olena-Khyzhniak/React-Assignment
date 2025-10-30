@@ -67,7 +67,7 @@ export default function FilterMoviesCard(props) {
     >
       <CardMedia
         component="img"
-        sx={{ height: 260, objectFit: "cover" }}
+        sx={{ height: 280, objectFit: "cover" }}
         image={img}
         alt="Filter"
       />

@@ -24,14 +24,10 @@ import Box from "@mui/material/Box";
 
 
 export default function MovieCard({ movie, action }) {
-  const { favorites, addToFavorites } = useContext(MoviesContext);
+  
+ const { favorites, addToFavorites } = useContext(MoviesContext);
 
-  if (favorites.find((id) => id === movie.id)) {
-    movie.favorite = true;
-  } else {
-    movie.favorite = false
-  }
-
+  const isFavorite = favorites.includes(movie.id);
   const handleAddToFavorite = (e) => {
     e.preventDefault();
     addToFavorites(movie);
@@ -58,7 +54,7 @@ export default function MovieCard({ movie, action }) {
 
             <CardHeader
         avatar={
-          movie.favorite ? (
+          isFavorite ? (
             <Avatar sx={{ backgroundColor: 'red' }}>
               <FavoriteIcon />
             </Avatar>
@@ -88,7 +84,7 @@ export default function MovieCard({ movie, action }) {
 
 
       <CardContent sx={{ px: 2, py: 1 }}>
-  <Box sx={{ backgroundColor: "#decfde99", borderRadius: 1, padding: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 0.5 }}>
+  <Box sx={{ backgroundColor: "#decfde99", borderRadius: 1, padding: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, flexWrap: "wrap", justifyContent: "center" }}>
     <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
       <CalendarIcon fontSize="small" />
       {movie.release_date || "—"}
@@ -102,6 +98,10 @@ export default function MovieCard({ movie, action }) {
 
 
         <CardActions sx={{ justifyContent: "center", pb: 1 }}>
+   <IconButton onClick={handleAddToFavorite} color={isFavorite ? "error" : "primary"}>
+    <FavoriteIcon />
+  </IconButton>
+
   <Link to={`/movies/${movie.id}`}>
     <Button variant="outlined" size="small" color="primary">
       More Info
