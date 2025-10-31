@@ -46,6 +46,8 @@ export default function Recommendations({ movies }) {
               </Typography>
             </CardContent>
 
+
+           <Link to={`/movies/${movie.id}`}>
             <CardMedia
               component="img"
               sx={{ height: 300, objectFit: "cover" }}
@@ -56,6 +58,7 @@ export default function Recommendations({ movies }) {
               }
               alt={movie.title}
             />
+            </Link>
 
             <Box sx={{ display: "flex", justifyContent: "center", gap: 1, pb: 1 }}>
               <IconButton

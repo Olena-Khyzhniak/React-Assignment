@@ -78,6 +78,7 @@ export default function MovieCard({ movie, action }) {
   }
       />
 
+    <Link to={`/movies/${movie.id}`}>
     <CardMedia
   component="img"
   sx={{ height: 300, objectFit: "cover" }}
@@ -87,6 +88,8 @@ export default function MovieCard({ movie, action }) {
       : img
   }
 />
+</Link>
+
 
 
       <CardContent sx={{ px: 2, py: 1 }}>
