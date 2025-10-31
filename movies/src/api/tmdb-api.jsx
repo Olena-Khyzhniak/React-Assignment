@@ -246,3 +246,15 @@ export const getTopRatedMovies = async () => {
   return await response.json();
 };
 
+
+export const getDiscoverMovies = async () => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&sort_by=release_date.desc&vote_average.gte=7&with_genres=28`
+  );
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+  return await response.json();
+};
+
+
