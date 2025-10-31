@@ -24,14 +24,20 @@ import Box from "@mui/material/Box";
 
 
 export default function MovieCard({ movie, action }) {
-  
- const { favorites, addToFavorites } = useContext(MoviesContext);
 
-  const isFavorite = favorites.includes(movie.id);
-  const handleAddToFavorite = (e) => {
-    e.preventDefault();
+ const { favorites, addToFavorites, removeFromFavorites } = useContext(MoviesContext);
+
+  const isFavorite = favorites.some((fav) => fav.id === movie.id);
+
+  const handleToggleFavorite = (e) => {
+  e.preventDefault();
+  if (isFavorite) {
+    removeFromFavorites(movie);
+  } else {
     addToFavorites(movie);
-  };
+  }
+};
+
  
 
 
@@ -98,7 +104,7 @@ export default function MovieCard({ movie, action }) {
 
 
         <CardActions sx={{ justifyContent: "center", pb: 1 }}>
-   <IconButton onClick={handleAddToFavorite} color={isFavorite ? "error" : "primary"}>
+   <IconButton onClick={handleToggleFavorite} color={isFavorite ? "error" : "primary"}>
     <FavoriteIcon />
   </IconButton>
 

@@ -1,55 +1,36 @@
 import React, { useContext } from "react";
 import PageTemplate from "../components/templateMovieListPage";
 import { MoviesContext } from "../contexts/moviesContext";
-import { useQueries } from "@tanstack/react-query";
-import { getMovie } from "../api/tmdb-api";
-import Spinner from '../components/spinner';
+import Spinner from "../components/spinner";
 import RemoveFromFavorites from "../components/cardIcons/removeFromFavorites";
 import WriteReview from "../components/cardIcons/writeReview";
 
-
 const FavoriteMoviesPage = () => {
-  const {favorites: movieIds } = useContext(MoviesContext);
+  const { favorites } = useContext(MoviesContext); // теперь это массив фильмов
 
-  // Create an array of queries and run in parallel.
-  const favoriteMovieQueries = useQueries({
-    queries: movieIds.map((movieId) => {
-      return {
-        queryKey: ['movie', { id: movieId }],
-        queryFn: getMovie,
-      }
-    })
-  });
-  
-  // Check if any of the parallel queries is still loading.
-  const isPending = favoriteMovieQueries.find((m) => m.isPending === true);
-
-  if (isPending) {
-    return <Spinner />;
+  if (!favorites || favorites.length === 0) {
+    return <p style={{ textAlign: "center", marginTop: "2rem" }}>No favorite movies yet.</p>;
   }
 
-  const movies = favoriteMovieQueries.map((q) => {
-    q.data.genre_ids = q.data.genres.map(g => g.id)
-    return q.data
-  });
+  // Защита от некорректных объектов
+  const validMovies = favorites.filter((movie) => movie && movie.id);
 
-  const toDo = () => true;
+  if (validMovies.length === 0) {
+    return <p style={{ textAlign: "center", marginTop: "2rem" }}>No valid movie data available.</p>;
+  }
 
   return (
     <PageTemplate
       title="Favorite Movies"
-      movies={movies}
-      action={(movie) => {
-        return (
-          <>
-            <RemoveFromFavorites movie={movie} />
-            <WriteReview movie={movie} />
-          </>
-        );
-      }}
+      movies={validMovies}
+      action={(movie) => (
+        <>
+          <RemoveFromFavorites movie={movie} />
+          <WriteReview movie={movie} />
+        </>
+      )}
     />
   );
-
 };
 
 export default FavoriteMoviesPage;

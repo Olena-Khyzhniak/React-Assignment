@@ -59,7 +59,7 @@ export default function Recommendations({ movies }) {
 
             <Box sx={{ display: "flex", justifyContent: "center", gap: 1, pb: 1 }}>
               <IconButton
-                onClick={() => addToFavorites(movie.id)}
+                onClick={() => addToFavorites(movie)}
                 color={isFavorite ? "error" : "primary"}
               >
                 <FavoriteIcon />
