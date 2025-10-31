@@ -14,6 +14,8 @@ import img from '../../images/pexels-dziana-hasanbekava-5480827.jpg';
 import { getGenres } from "../../api/tmdb-api";
 import { useQuery } from '@tanstack/react-query';
 import Spinner from '../spinner';
+import SortIcon from "@mui/icons-material/Sort";
+
 
 const formControl = {
   margin: 1,
@@ -67,7 +69,7 @@ export default function FilterMoviesCard(props) {
     >
       <CardMedia
         component="img"
-        sx={{ height: 280, objectFit: "cover" }}
+        sx={{ height: 220, objectFit: "cover" }}
         image={img}
         alt="Filter"
       />
@@ -98,7 +100,7 @@ export default function FilterMoviesCard(props) {
           <Select
             labelId="genre-label"
             id="genre-select"
-            value={props.genreFilter}
+            value={props.genreFilter || "0"}
             onChange={handleGenreChange}
           >
             {genres.map((genre) => (
@@ -108,6 +110,23 @@ export default function FilterMoviesCard(props) {
             ))}
           </Select>
         </FormControl>
+
+      <FormControl sx={{ ...formControl }}>
+  <InputLabel id="sort-label">Sort By</InputLabel>
+  <Select
+    labelId="sort-label"
+    id="sort-select"
+    value={props.sortBy || "rating"}
+    onChange={(e) => props.onUserInput("sort", e.target.value)}
+  >
+    <MenuItem value="rating">Rating</MenuItem>
+    <MenuItem value="date">Release Date</MenuItem>
+    <MenuItem value="alphabetical">Alphabetical</MenuItem>
+  </Select>
+</FormControl>
+
+
+
       </CardContent>
     </Card>
   );
